@@ -39,9 +39,9 @@ func main() {
 		fmt.Println(v.DescribeTask())
 	}
 
-	tasklist = t.FilterTasksByAssignee("Alice")
+	filtertasklist := t.FilterTasksByAssignee("Alice")
 	fmt.Println("Filtered by username :- Alice")
-	for _, v := range tasklist {
+	for _, v := range filtertasklist {
 		fmt.Println(v.DescribeTask())
 	}
 
@@ -49,4 +49,10 @@ func main() {
 	fmt.Println("Update task 1 by user 1:-")
 	fmt.Println(t.UpdateTaskStatus(1, 1, tasks.PROGRESS))
 
+	fmt.Println("SORTING tasks")
+	t.SetStrategy(&tasks.PriorityDescStrategy{})
+	t.Sort()
+	for _, v := range t.GetAllTasks() {
+		fmt.Println(v.DescribeTask())
+	}
 }

@@ -29,8 +29,9 @@ type TaskManager interface {
 }
 
 type TaskRepo struct {
-	Tasks []*Task
-	Users users.UserManager
+	Tasks    []*Task
+	Users    users.UserManager
+	Strategy TaskSortStrategy
 }
 
 var taskrepo *TaskRepo
