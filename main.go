@@ -15,16 +15,16 @@ func main() {
 	//Create taskRepo
 	t := tasks.CreateTaskRepo(u)
 	//create users
-	users.NewUser(u, "John", "Software Engineer", 1)
-	users.NewUser(u, "Jake", "Software Engineer", 2)
-	users.NewUser(u, "Alice", "Program Manager", 3)
-	users.NewUser(u, "Alice", "Senior Engineer", 4)
+	u.CreateUser("John", "Software Engineer", 1)
+	u.CreateUser("Jake", "Software Engineer", 2)
+	u.CreateUser("Alice", "Program Manager", 3)
+	u.CreateUser("Alice", "Senior Engineer", 4)
 
 	//create tasks
-	tasks.NewTask(t, "Backend Revamp", "Go Backend Revamp changes", tasks.HIGH, tasks.BACKLOG, 1, 1, 4)
-	tasks.NewTask(t, "Frontend Revamp", "UI Revamp changes", tasks.LOW, tasks.BACKLOG, 2, 2, 3)
-	tasks.NewTask(t, "Infrastrucutre optimization", "K8s config changes changes", tasks.URGENT, tasks.BACKLOG, 3, 1, 3)
-	tasks.NewTask(t, "Database Revamp", "Database Revamp changes", tasks.HIGH, tasks.BACKLOG, 4, 4, 3)
+	t.CreateTask("Backend Revamp", "Go Backend Revamp changes", tasks.HIGH, tasks.BACKLOG, 1, 1, 4)
+	t.CreateTask("Frontend Revamp", "UI Revamp changes", tasks.LOW, tasks.BACKLOG, 2, 2, 3)
+	t.CreateTask("Infrastrucutre optimization", "K8s config changes changes", tasks.URGENT, tasks.BACKLOG, 3, 1, 3)
+	t.CreateTask("Database Revamp", "Database Revamp changes", tasks.HIGH, tasks.BACKLOG, 4, 4, 3)
 
 	//update with decorator
 	taskWithPriority := tasks.NewPriorityDecorator(t.GetTaskDetails(4), tasks.HIGH)
@@ -32,7 +32,7 @@ func main() {
 	taskWithPriority.SetPriority(tasks.LOW)
 
 	fmt.Println(taskWithPriority)
-	tasks.NewTask(t, "Lunch", "lunch changes", tasks.URGENT, tasks.BACKLOG, 5, 10, 3)
+	t.CreateTask("Lunch", "lunch changes", tasks.URGENT, tasks.BACKLOG, 5, 10, 3)
 
 	tasklist := t.GetAllTasks()
 	for _, v := range tasklist {

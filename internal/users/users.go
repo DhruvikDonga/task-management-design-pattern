@@ -9,6 +9,7 @@ type UserManager interface {
 	GetUserDetails(Userid int) *User
 	GetAllUsers() []*User
 	GetByUserName(username string) []*User
+	CreateUser(name, description string, id int)
 }
 
 type UserRepo struct {
@@ -48,14 +49,14 @@ func CreateUserRepo() *UserRepo {
 	return userrepo
 }
 
-func NewUser(repo *UserRepo, name, description string, id int) {
+func (u *UserRepo) CreateUser(name, description string, id int) {
 
 	t := &User{
 		userid:      id,
 		name:        name,
 		description: description,
 	}
-	repo.Users = append(repo.Users, t)
+	u.Users = append(u.Users, t)
 	fmt.Println("User ", name, " added")
 }
 

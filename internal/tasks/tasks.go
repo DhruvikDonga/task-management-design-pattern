@@ -40,6 +40,7 @@ var once sync.Once
 type TaskData interface {
 	DescribeTask() string
 	SetTaskStatus(status string, userid int) string
+	CreateTask(name, description, priority, status string, id, assignee, reportedby int)
 }
 type Task struct {
 	taskid      int
@@ -83,13 +84,13 @@ func CreateTaskRepo(users users.UserManager) *TaskRepo {
 	return taskrepo
 }
 
-func NewTask(repo *TaskRepo, name, description, priority, status string, id, assignee, reportedby int) {
-	assigned := repo.Users.GetUserDetails(assignee)
+func (tr *TaskRepo) CreateTask(name, description, priority, status string, id, assignee, reportedby int) {
+	assigned := tr.Users.GetUserDetails(assignee)
 	if assigned == nil {
 		fmt.Println(fmt.Errorf("ERROR: Assignee %d is not valid for task %s", assignee, name).Error())
 		return
 	}
-	reporter := repo.Users.GetUserDetails(reportedby)
+	reporter := tr.Users.GetUserDetails(reportedby)
 	if reporter == nil {
 		fmt.Println(fmt.Errorf("ERROR: Reporter %d is not valid for task %s", reportedby, name).Error())
 		return
@@ -102,11 +103,11 @@ func NewTask(repo *TaskRepo, name, description, priority, status string, id, ass
 		description: description,
 		priority:    priority,
 		status:      status,
-		users:       repo.Users,
+		users:       tr.Users,
 	}
 	t.RegisterReceiver(assigned)
 	t.RegisterReceiver(reporter)
-	repo.Tasks = append(repo.Tasks, t)
+	tr.Tasks = append(tr.Tasks, t)
 	fmt.Println("Task ", name, " added")
 }
 
